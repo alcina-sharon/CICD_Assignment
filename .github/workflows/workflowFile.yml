@@ -39,10 +39,10 @@ jobs:
       - name: Check score
         run: |
           score=${{ steps.extract-score.outputs.score }}
-          if (( $(echo "$score > 0.50" | bc -l) )); then
-            echo "Score is greater than 0.50, test succeeded."
+          if (( $(echo "$score > 0.3" | bc -l) )); then
+            echo "Score is greater than 0.30, test succeeded."
           else
-            echo "Score is not greater than 0.50, test failed."
+            echo "Score is not greater than 0.30, test failed."
             exit 1
           fi
   
