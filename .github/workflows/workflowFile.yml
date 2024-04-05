@@ -1,6 +1,11 @@
 name: train and test using docker image
-
-on: push
+on :
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+      - 'data/**'
+      - 'requirements.txt'
+      - 'README.md'
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
@@ -26,3 +31,18 @@ jobs:
 
       - name: Run Docker container
         run: docker run --rm alcinasharon21/mlops:latest
+
+      - name: Extract score from container output
+        id: extract-score
+        run: echo "::set-output name=score::$(docker run --rm alcinasharon21/mlops:latest | grep 'Score:' | awk '{print $2}')"
+  
+      - name: Check score
+        run: |
+          score=${{ steps.extract-score.outputs.score }}
+          if (( $(echo "$score > 0.50" | bc -l) )); then
+            echo "Score is greater than 0.50, test succeeded."
+          else
+            echo "Score is not greater than 0.50, test failed."
+            exit 1
+          fi
+  
