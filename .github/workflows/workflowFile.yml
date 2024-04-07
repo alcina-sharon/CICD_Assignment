@@ -41,9 +41,9 @@ jobs:
       - name: Check output value
         run: |
             output=${{ steps.execute_docker_image.outputs.output }}
-            if [ $(echo "$output < 0.30" | bc -l) -eq 1 ]; then
-              echo "Output value is less than 0.30"
+            if [ $(echo "$output > 0.30" | bc -l) -eq 1 ]; then
+              echo "Output value is greater than 0.30"
             else
-              echo "Output value is greater than or equal to 0.30"
+              echo "Output value is less than or equal to 0.30"
               exit 1
             fi
