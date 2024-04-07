@@ -37,4 +37,4 @@ jobs:
           OUTPUT=$(docker run --rm alcinasharon21/mlops:latest)
           echo "Score:"
           echo "$OUTPUT"
-          if [[ `echo "$OUTPUT 0.30" | awk '{print ($1 < $2)}'` == 1 ]]; then echo "Insufficient Accuracy" && exit 1; fi
+          if [[ `echo "$OUTPUT 0.50" | awk '{print ($1 < $2)}'` == 1 ]]; then echo "Insufficient Accuracy" && exit 1; fi
