@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
     
-      - name: Build and push Docker image
+      - name: Train
         uses: docker/build-push-action@v4
         with:
           push: true
@@ -29,12 +29,9 @@ jobs:
       - name: Pull Docker image
         run: docker pull alcinasharon21/mlops:latest
 
-      - name: Run Docker container
-        run: docker run --rm alcinasharon21/mlops:latest
-
-      - name: Execute Docker image and test
+      - name: Test
         run: |
           OUTPUT=$(docker run --rm alcinasharon21/mlops:latest)
           echo "Score:"
           echo "$OUTPUT"
-          if [[ `echo "$OUTPUT 0.30" | awk '{print ($1 < $2)}'` == 1 ]]; then echo "Insufficient Accuracy" && exit 1; fi
+          if [[ `echo "$OUTPUT 0.50" | awk '{print ($1 < $2)}'` == 1 ]]; then echo "Insufficient Accuracy" && exit 1; fi
