@@ -37,13 +37,6 @@ jobs:
         # run: echo "::set-output name=score::$(docker run --rm alcinasharon21/mlops:latest | grep 'Score:' | awk '{print $2}')"
         run:
           OUTPUT=$(docker run --rm alcinasharon21/mlops:latest)
-          echo "::set-output name=output::$output"
-      - name: Check output value
-        run: |
-            output=${{ steps.execute_docker_image.outputs.output }}
-            if [ $(echo "$output > 0.30" | bc -l) -eq 1 ]; then
-              echo "Output value is greater than 0.30"
-            else
-              echo "Output value is less than or equal to 0.30"
-              exit 1
-            fi
+          echo "Score:"
+          echo "$OUTPUT"
+          if [[ `echo "$OUTPUT 0.30" | awk '{print ($1 < $2)}'` == 1 ]]; then echo "Insufficient Accuracy" && exit 1; fi
