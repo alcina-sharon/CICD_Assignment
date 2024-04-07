@@ -32,10 +32,8 @@ jobs:
       - name: Run Docker container
         run: docker run --rm alcinasharon21/mlops:latest
 
-      - name: Execute Docker image
-        # id: extract-score
-        # run: echo "::set-output name=score::$(docker run --rm alcinasharon21/mlops:latest | grep 'Score:' | awk '{print $2}')"
-        run:
+      - name: Execute Docker image and test
+        run: |
           OUTPUT=$(docker run --rm alcinasharon21/mlops:latest)
           echo "Score:"
           echo "$OUTPUT"
